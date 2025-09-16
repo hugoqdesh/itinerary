@@ -30,17 +30,19 @@ public class Prettifier {
 
         try {
             AirportLookup airportLookup = new AirportLookup(airportLookupPath);
-
             BufferedReader reader = new BufferedReader(new FileReader(inputFile));
             StringBuilder fileContent = new StringBuilder();
+
             String line;
             while ((line = reader.readLine()) != null) {
                 fileContent.append(line).append("\n");
             }
             reader.close();
 
+            String prettified = Formater.prettify(fileContent, airportLookup);
+
             BufferedWriter writer = new BufferedWriter(new FileWriter(outputPath));
-            writer.write(fileContent.toString());
+            writer.write(prettified);
             writer.close();
         } catch (IOException e) {
             System.out.println("something went wrong");

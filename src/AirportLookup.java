@@ -16,9 +16,9 @@ public class AirportLookup {
 
             String header = reader.readLine();
             String[] headerColumns = header.split(",");
-            String[] requiredColumns = {"name", "iso_country", "municipality", "icao_code" , "iata_code", "coordinates"};
-
             Set<String> columnCheck = new HashSet<>(Arrays.asList(headerColumns));
+
+            String[] requiredColumns = {"name", "iso_country", "municipality", "icao_code" , "iata_code", "coordinates"};
 
             for(String col : requiredColumns) {
                 if(!columnCheck.contains(col)) {
@@ -49,22 +49,18 @@ public class AirportLookup {
     }
 
     public String getIataName(String code) {
-        System.out.println(iataName.get(code));
         return iataName.get(code);
     }
 
     public String getIataCity(String code) {
-        System.out.println(iataCity.get(code));
         return iataCity.get(code);
     }
 
     public String getIcaoName(String code) {
-        System.out.println(icaoName.get(code));
         return icaoName.get(code);
     }
 
     public String getIcaoCity(String code) {
-        System.out.println(icaoCity.get(code));
         return icaoCity.get(code);
     }
 }
