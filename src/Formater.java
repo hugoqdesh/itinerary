@@ -105,22 +105,12 @@ public class Formater {
 
             try {
                 ZonedDateTime zone = ZonedDateTime.parse(date);
-                String time;
-
-                switch (format) {
-                    case "D":
-                        time = zone.format(DateTimeFormatter.ofPattern("dd MMM yyyy"));
-                        break;
-                    case "T12":
-                        time = zone.format(DateTimeFormatter.ofPattern("hh:mma (XXX)"));
-                        break;
-                    case "T24":
-                        time = zone.format(DateTimeFormatter.ofPattern("HH:mm (XXX)"));
-                        break;
-                    default:
-                        time = matcher.group(0);
-                        break;
-                }
+                String time = switch (format) {
+                    case "D" -> zone.format(DateTimeFormatter.ofPattern("dd MMM yyyy"));
+                    case "T12" -> zone.format(DateTimeFormatter.ofPattern("hh:mma (XXX)"));
+                    case "T24" -> zone.format(DateTimeFormatter.ofPattern("HH:mm (XXX)"));
+                    default -> matcher.group(0);
+                };
 
                 matcher.appendReplacement(result, Matcher.quoteReplacement(time));
 
