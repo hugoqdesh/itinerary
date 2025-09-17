@@ -1,3 +1,6 @@
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -8,6 +11,7 @@ public class Formater {
 
         text = codeToCity(text, airportLookup);
         text = codeToName(text, airportLookup);
+        text = dateTimes(text);
         text = cleanWhitespace(text);
 
         return text;
@@ -87,6 +91,46 @@ public class Formater {
         icaoNameMatcher.appendTail(icaoNameResult);
 
         return icaoNameResult.toString();
+    }
+
+    public static String dateTimes(String text) {
+        Pattern pattern = Pattern.compile("(D|T12|T24)\\(([^)]+)\\)");
+        Matcher matcher = pattern.matcher(text);
+
+        StringBuilder result = new StringBuilder();
+
+        while(matcher.find()) {
+            String format = matcher.group(1);
+            String date = matcher.group(2);
+
+            try {
+                ZonedDateTime zone = ZonedDateTime.parse(date);
+                String time;
+
+                switch (format) {
+                    case "D":
+                        time = zone.format(DateTimeFormatter.ofPattern("dd MMM yyyy"));
+                        break;
+                    case "T12":
+                        time = zone.format(DateTimeFormatter.ofPattern("hh:mma (XXX)"));
+                        break;
+                    case "T24":
+                        time = zone.format(DateTimeFormatter.ofPattern("HH:mm (XXX)"));
+                        break;
+                    default:
+                        time = matcher.group(0);
+                        break;
+                }
+
+                matcher.appendReplacement(result, Matcher.quoteReplacement(time));
+
+            } catch (DateTimeParseException e) {
+                matcher.appendReplacement(result, Matcher.quoteReplacement(matcher.group(0)));
+            }
+        }
+        matcher.appendTail(result);
+
+        return result.toString();
     }
 
     public static String cleanWhitespace(String text) {
