@@ -22,7 +22,7 @@ public class AirportLookup {
 
             for(String col : requiredColumns) {
                 if(!columnCheck.contains(col)) {
-                    System.out.println("Missing: " + col);
+                    System.out.println("Airport lookup malformed");
                     return;
                 }
             }
@@ -44,7 +44,7 @@ public class AirportLookup {
 
             reader.close();
         } catch (IOException e) {
-            System.out.println("something went wrong");
+            System.out.println("Airport lookup malformed");
         }
     }
 
