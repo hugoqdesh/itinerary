@@ -1,5 +1,6 @@
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.DateTimeParseException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -99,6 +100,8 @@ public class Formater {
 
         StringBuilder result = new StringBuilder();
 
+        DateTimeFormatter formatter = new DateTimeFormatterBuilder().appendOffset("+HH:MM", "+00:00").toFormatter();
+
         while(matcher.find()) {
             String format = matcher.group(1);
             String date = matcher.group(2);
@@ -107,8 +110,8 @@ public class Formater {
                 ZonedDateTime zone = ZonedDateTime.parse(date);
                 String time = switch (format) {
                     case "D" -> zone.format(DateTimeFormatter.ofPattern("dd MMM yyyy"));
-                    case "T12" -> zone.format(DateTimeFormatter.ofPattern("hh:mma (XXX)"));
-                    case "T24" -> zone.format(DateTimeFormatter.ofPattern("HH:mm (XXX)"));
+                    case "T12" -> zone.format(DateTimeFormatter.ofPattern("hh:mma")) + " (" + zone.format(formatter) + ")";
+                    case "T24" -> zone.format(DateTimeFormatter.ofPattern("HH:mm")) + " (" + zone.format(formatter) + ")";
                     default -> matcher.group(0);
                 };
 
