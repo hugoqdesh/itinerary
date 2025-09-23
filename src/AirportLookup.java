@@ -4,11 +4,12 @@ import java.io.IOException;
 import java.util.*;
 
 public class AirportLookup {
-
     private static final Map<String, String> iataName = new HashMap<>();
     private static final Map<String, String> iataCity = new HashMap<>();
     private static final Map<String, String> icaoName = new HashMap<>();
     private static final Map<String, String> icaoCity = new HashMap<>();
+
+    private boolean isValid = true;
 
     public AirportLookup(String csvPath) {
         try {
@@ -23,6 +24,7 @@ public class AirportLookup {
             for(String col : requiredColumns) {
                 if(!columnCheck.contains(col)) {
                     System.out.println("Airport lookup malformed");
+                    isValid = false;
                     return;
                 }
             }
@@ -30,6 +32,15 @@ public class AirportLookup {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] row = line.split(",", -1);
+
+                for(String cell : row) {
+                    if (cell.trim().isEmpty()) {
+                        System.out.println("Airport lookup malformed");
+                        isValid = false;
+                        reader.close();
+                        return;
+                    }
+                }
 
                 String name = row[0];
                 String city = row[2];
@@ -45,7 +56,12 @@ public class AirportLookup {
             reader.close();
         } catch (IOException e) {
             System.out.println("Airport lookup malformed");
+            isValid = false;
         }
+    }
+
+    public boolean isValid() {
+        return isValid;
     }
 
     public String getIataName(String code) {

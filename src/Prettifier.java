@@ -38,6 +38,10 @@ public class Prettifier {
             BufferedReader reader = new BufferedReader(new FileReader(inputFile));
             StringBuilder fileContent = new StringBuilder();
 
+            if (!airportLookup.isValid()) {
+                return;
+            }
+
             String line;
             while ((line = reader.readLine()) != null) {
                 fileContent.append(line).append("\n");
