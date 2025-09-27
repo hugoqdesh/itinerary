@@ -6,7 +6,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Formater {
-
     public static String prettify(StringBuilder fileContent, AirportLookup airportLookup) {
         String text = fileContent.toString();
 
@@ -132,8 +131,8 @@ public class Formater {
         text = text.replace("\\r", "\n");
 
         text = text.replace("[\\v\\f\\r]", "\n");
-        text = text.replaceAll("\n{3,}","\n\n");
-
+        text = text.replaceAll("[ \t]*\n[ \t]*", "\n");
+        text = text.replaceAll("\n{3,}", "\n\n");
         return text.trim();
     }
 }
