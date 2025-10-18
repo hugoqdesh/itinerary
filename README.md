@@ -11,7 +11,6 @@ A command-line tool that converts flight itineraries from administrative format 
 ### Prerequisites
 
 * Java 8 or higher
-* Airport lookup CSV file with columns: name, iso_country, municipality, icao_code, iata_code, coordinates
 
 ### Installation
 
